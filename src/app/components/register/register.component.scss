@@ -1,0 +1,21 @@
+.register-card {
+  backdrop-filter: blur(10px);
+  background: rgba(255, 255, 255, 0.85);
+  border-radius: 20px;
+  padding: 2rem;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+  max-width: 450px;
+  width: 100%;
+}
+
+.btn-gradient {
+  background: linear-gradient(to right, #6f42c1, #d63384);
+  color: #fff;
+  border: none;
+  transition: 0.3s;
+}
+
+.btn-gradient:hover {
+  background: linear-gradient(to right, #5a32a3, #b02a6e);
+  transform: translateY(-2px);
+}

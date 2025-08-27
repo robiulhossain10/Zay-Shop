@@ -1,0 +1,9 @@
+ .btn-gradient {
+    background: linear-gradient(to right, #7c3aed, #ec4899);
+    color: white;
+    transition: 0.3s;
+  }
+  .btn-gradient:hover {
+    background: linear-gradient(to right, #6d28d9, #db2777);
+    transform: translateY(-3px);
+  }
