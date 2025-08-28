@@ -9,6 +9,7 @@ import { ErrorComponent } from './components/error/error.component';
 import { ReviewComponent } from './components/review/review.component';
 import { LoginComponent } from './components/login/login.component';
 import { RegisterComponent } from './components/register/register.component';
+import { UserListComponent } from './components/user-list/user-list.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' },
@@ -17,6 +18,9 @@ const routes: Routes = [
   { path: 'contact', component: ContactComponent },
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
+  { path: 'users', component: UserListComponent },
+  { path: 'users/add', component: UserListComponent },
+  { path: 'users/edit/:id', component: UserListComponent },
   {
     path: 'shop',
     component: ShopComponent,

@@ -1,13 +1,12 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-// import { User } from '../models/User';
 
 @Injectable({
   providedIn: 'root',
 })
 export class UserService {
-  private apiUrl = 'http://localhost:3000/users';
+  private apiUrl = 'http://192.168.20.133:3000/users';
 
   constructor(private http: HttpClient) {}
 
@@ -15,7 +14,7 @@ export class UserService {
     return this.http.get<any[]>(this.apiUrl);
   }
 
-  getUser(id: number): Observable<any> {
+  getUser(id: string | number): Observable<any> {
     return this.http.get<any>(`${this.apiUrl}/${id}`);
   }
 
@@ -23,11 +22,11 @@ export class UserService {
     return this.http.post<any>(this.apiUrl, user);
   }
 
-  updateUser(user: any): Observable<any> {
-    return this.http.put<any>(`${this.apiUrl}/${user.id}`, user);
+  updateUser(id: string | number, user: any): Observable<any> {
+    return this.http.put<any>(`${this.apiUrl}/${id}`, user);
   }
 
-  deleteUser(id: number): Observable<void> {
+  deleteUser(id: string | number): Observable<void> {
     return this.http.delete<void>(`${this.apiUrl}/${id}`);
   }
 }
