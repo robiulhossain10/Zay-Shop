@@ -7,17 +7,21 @@ declare var bootstrap: any;
 @Component({
   selector: 'app-user-list',
   templateUrl: './user-list.component.html',
+  styleUrls: ['./user-list.component.scss'],
 })
 export class UserListComponent implements OnInit, AfterViewInit {
   users: any[] = [];
   userForm!: FormGroup;
   isEditMode = false;
   editingUserId?: string | number;
+
+  // Modals
   modalInstance: any;
   deleteModalInstance: any;
+  successModalInstance: any;
   deletingUserId?: string | number;
 
-  constructor(private userService: UserService, private fb: FormBuilder) {}
+  constructor(private fb: FormBuilder, private userService: UserService) {}
 
   ngOnInit(): void {
     this.initForm();
@@ -25,21 +29,21 @@ export class UserListComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    // Initialize modals after view is loaded
-    const modalEl = document.getElementById('userModal');
+    const userModalEl = document.getElementById('userModal');
     const deleteModalEl = document.getElementById('deleteModal');
-    if (modalEl) this.modalInstance = new bootstrap.Modal(modalEl);
+    const successModalEl = document.getElementById('successModal');
+
+    if (userModalEl) this.modalInstance = new bootstrap.Modal(userModalEl);
     if (deleteModalEl)
       this.deleteModalInstance = new bootstrap.Modal(deleteModalEl);
+    if (successModalEl)
+      this.successModalInstance = new bootstrap.Modal(successModalEl);
 
-    // Reset form on modal close
-    if (modalEl) {
-      modalEl.addEventListener('hidden.bs.modal', () => {
-        this.userForm.reset();
-        this.isEditMode = false;
-        this.editingUserId = undefined;
-      });
-    }
+    userModalEl?.addEventListener('hidden.bs.modal', () => {
+      this.userForm.reset();
+      this.isEditMode = false;
+      this.editingUserId = undefined;
+    });
   }
 
   initForm() {
@@ -51,24 +55,37 @@ export class UserListComponent implements OnInit, AfterViewInit {
 
   loadUsers() {
     this.userService.getUsers().subscribe({
-      next: (data) => (this.users = data),
-      error: (err) => console.error('Error loading users', err),
+      next: (res) => (this.users = res || []),
+      error: (err) => {
+        console.error('Error loading users', err);
+        this.users = [];
+      },
     });
   }
 
   openModal(user?: any) {
     this.isEditMode = !!user;
     this.editingUserId = user?.id;
-
     if (user) this.userForm.patchValue({ name: user.name, email: user.email });
     else this.userForm.reset();
-
-    this.modalInstance.show();
+    this.modalInstance?.show();
   }
 
-  isInvalid(controlName: string): boolean {
-    const control = this.userForm.get(controlName);
-    return !!(control && control.invalid && control.touched);
+  openDeleteModal(id: string | number) {
+    this.deletingUserId = id;
+    this.deleteModalInstance?.show();
+  }
+
+  confirmDelete() {
+    if (!this.deletingUserId) return;
+    this.userService.deleteUser(this.deletingUserId).subscribe({
+      next: () => {
+        this.loadUsers();
+        this.deleteModalInstance?.hide();
+        this.showSuccessModal();
+      },
+      error: (err) => console.error('Delete error', err),
+    });
   }
 
   onSubmit() {
@@ -77,41 +94,27 @@ export class UserListComponent implements OnInit, AfterViewInit {
       return;
     }
 
-    if (this.isEditMode) {
-      this.userService
-        .updateUser(this.editingUserId!, this.userForm.value)
-        .subscribe({
-          next: () => {
-            this.loadUsers();
-            this.modalInstance.hide();
-          },
-          error: (err) => console.error('Update error', err),
-        });
-    } else {
-      this.userService.addUser(this.userForm.value).subscribe({
-        next: () => {
-          this.loadUsers();
-          this.modalInstance.hide();
-        },
-        error: (err) => console.error('Add error', err),
-      });
-    }
+    const request$ = this.isEditMode
+      ? this.userService.updateUser(this.editingUserId!, this.userForm.value)
+      : this.userService.addUser(this.userForm.value);
+
+    request$.subscribe({
+      next: () => {
+        this.loadUsers();
+        this.modalInstance?.hide();
+        this.showSuccessModal();
+      },
+      error: (err) =>
+        console.error(this.isEditMode ? 'Update error' : 'Add error', err),
+    });
   }
 
-  openDeleteModal(userId: string | number) {
-    this.deletingUserId = userId;
-    this.deleteModalInstance.show();
+  showSuccessModal() {
+    this.successModalInstance?.show();
   }
 
-  confirmDelete() {
-    if (this.deletingUserId != null) {
-      this.userService.deleteUser(this.deletingUserId).subscribe({
-        next: () => {
-          this.loadUsers();
-          this.deleteModalInstance.hide();
-        },
-        error: (err) => console.error('Delete error', err),
-      });
-    }
+  isInvalid(controlName: string): boolean {
+    const control = this.userForm.get(controlName);
+    return !!(control && control.invalid && control.touched);
   }
 }
