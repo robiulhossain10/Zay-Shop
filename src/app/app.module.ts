@@ -17,6 +17,10 @@ import { LoginComponent } from './components/login/login.component';
 import { RegisterComponent } from './components/register/register.component';
 import { HttpClientModule } from '@angular/common/http';
 import { UserListComponent } from './components/user-list/user-list.component';
+import { ChildComponent } from './dataSharing/child/child.component';
+import { ParentComponent } from './dataSharing/parent/parent.component';
+import { ReceiverComponent } from './dataSharing/receiver/receiver.component';
+import { SenderComponent } from './dataSharing/sender/sender.component';
 
 @NgModule({
   declarations: [
@@ -32,7 +36,11 @@ import { UserListComponent } from './components/user-list/user-list.component';
     FooterComponent,
     LoginComponent,
     RegisterComponent,
-    UserListComponent
+    UserListComponent,
+    ChildComponent,
+    ParentComponent,
+    ReceiverComponent,
+    SenderComponent
   ],
   imports: [
     BrowserModule,
