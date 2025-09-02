@@ -1,0 +1,42 @@
+<h2>Strtural Directives Example</h2>
+
+<div class="" *ngIf="isLogin else loginBlock">
+  <p>Welcome, Robiul</p>
+</div>
+
+<ng-template #loginBlock></ng-template>
+
+
+<hr>
+
+<div class="container">
+
+  <h2>Ngif Else example</h2>
+  <button (click)="changeStatus()">Nxt Status</button>
+
+  <!--Status Check-->
+  <p *ngIf="status == 1; else status2">
+
+    status 1 is Waiting
+  </p>
+
+
+  <ng-template #status2>
+    <p *ngIf="status == 2; else status3">
+      Status 2 is Processing
+    </p>
+  </ng-template>
+  <ng-template #status3>
+    <p>
+      Status 3 is Completed
+    </p>
+  </ng-template>
+
+
+  <ul class="list-unstyled">
+    <li *ngFor="let val of user; index as i">
+      {{i+1}}.{{val}}
+    </li>
+  </ul>
+
+</div>

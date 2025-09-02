@@ -19,8 +19,13 @@ import { HttpClientModule } from '@angular/common/http';
 import { UserListComponent } from './components/user-list/user-list.component';
 import { ChildComponent } from './dataSharing/child/child.component';
 import { ParentComponent } from './dataSharing/parent/parent.component';
-import { ReceiverComponent } from './dataSharing/receiver/receiver.component';
-import { SenderComponent } from './dataSharing/sender/sender.component';
+import { User1Component } from './chat/user1/user1.component';
+import { User2Component } from './chat/user2/user2.component';
+import { SendComponent } from './chat/send/send.component';
+import { ReceiveComponent } from './chat/receive/receive.component';
+import { ExampleComponent } from './directives/example/example.component';
+import { ProductComponent } from './directives/product/product.component';
+import { CustomdirectiveDirective } from './directives/customdirective.directive';
 
 @NgModule({
   declarations: [
@@ -39,8 +44,13 @@ import { SenderComponent } from './dataSharing/sender/sender.component';
     UserListComponent,
     ChildComponent,
     ParentComponent,
-    ReceiverComponent,
-    SenderComponent
+    User1Component,
+    User2Component,
+    SendComponent,
+    ReceiveComponent,
+    ExampleComponent,
+    ProductComponent,
+    CustomdirectiveDirective
   ],
   imports: [
     BrowserModule,
