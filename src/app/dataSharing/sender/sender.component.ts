@@ -4,14 +4,12 @@ import { SharedServiceService } from 'src/app/services/shared-service.service';
 @Component({
   selector: 'app-sender',
   templateUrl: './sender.component.html',
-  styleUrls: ['./sender.component.scss']
+  styleUrls: ['./sender.component.scss'],
 })
 export class SenderComponent {
   newMassage = '';
 
-  constructor(private shared: SharedServiceService) {
-    
-  }
+  constructor(private shared: SharedServiceService) {}
 
   sendMassage() {
     this.shared.updateMessage(this.newMassage);
@@ -20,15 +18,21 @@ export class SenderComponent {
   user = {
     name: 'Robiul',
     age: 26,
-    address: 'Matuail Dhaka'
-  }
+    address: 'Matuail Dhaka',
+  };
+
+  newData: any;
 
   saveData() {
-    localStorage.setItem('mydata',JSON.stringify(this.user));
+    localStorage.setItem('mydata', JSON.stringify(this.user));
   }
   getData() {
-   localStorage.getItem('mydata' || null);
+    const x : any = localStorage.getItem('mydata');
+    this.newData = JSON.parse(x);
+
+    console.log(this.newData);
+    
   }
 
-  newData = {};
+  
 }
